@@ -1,0 +1,134 @@
+﻿@model IEnumerable<StudentProject.Models.Student>
+
+    
+       
+
+
+<button type="button" class="btn btn-primary" id="btnAdd" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New</button>
+
+<div id="ajaxresult">
+    <partial name="_StudentsList" model="Model"></partial>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modalBody">
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+        
+            $("#btnAdd").click(function(){
+                $.ajax({
+                    url:"Student2/_Create",
+                    method:"Get",
+                    success:function(response){
+                        $("#modalBody").html(response);
+                        $(".modal").show();
+                        $("#btnUpdate").hide();
+                        $("#btnSave").show();
+                    },
+                    error:function(){
+
+                    },
+                });//ajax
+            });//btnAdd
+
+            function Edit(btn){
+                var id=btn.id;
+                $.ajax({
+                    url:"Student2/_Edit",
+                    method:"Get",
+                    data:{id:id},
+                    success:function(response){
+                        $("#modalBody").html(response);
+                        $(".modal").show();
+                        $("#btnSave").hide();
+                        $("#btnUpdate").show();
+                    },
+                    error:function(){
+
+                    },
+                });//ajax
+            }
+
+
+            function Details(btn){
+                var id=btn.id;
+                $.ajax({
+                    url:"Student2/_Details",
+                    method:"Get",
+                    data:{id:id},
+                    success:function(response){
+                        $("#modalBody").html(response);
+                        $(".modal").show();
+                        $("#btnSave").hide();
+                        $("#btnUpdate").hide();
+                    },
+                    error:function(){
+
+                    },
+                });//ajax
+            }
+
+            function Delete(btn)
+            {
+                var id=btn.id;
+                $.ajax({
+                    url:"Student2/Delete",
+                    method:"Get",
+                    data:{id:id},
+                    success:function(response){
+                        if(response=="ok")
+                            {
+                                $('#ajaxresult').load('@Url.Action("_StudentsList")');
+                                $(".modal").hide();
+                                $('.modal-backdrop').remove();
+                                swal({
+                                     title: "Succes",
+                                     text: "Deleted!",
+                                     icon: "success",
+                                     button: "Ok",
+                                   });
+                            }
+                            else{
+                                swal({
+                                     title: "Info",
+                                     text: "Something went wrong!",
+                                     icon: "info",
+                                     button: "Ok",
+                                   });
+                            }
+                    },
+                    error:function(){
+
+                    },
+                });//ajax
+            }
+
+
+            function confirmation(btn){
+                        swal({
+                              title: "Are you sure t delete?",
+                              text: "",
+                              icon: "warning",
+                              buttons: true,
+                              dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                                debugger;
+                              if (willDelete) {
+                                  Delete(btn);
+                              } else {
+                                swal("Canceled!");
+                              }
+                            });
+                    }
+
+
+
+
+
+</script>

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<StudentProject.Models.Student>
+
+
+@{
+    Layout = null;
+}
+
+
+<table class="table" id="studentsTable">
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Father Name
+            </th>
+            <th>
+                Class
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Country
+            </th>            
+            <th>
+                Addesses
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.FirstName
+                    </td>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.FatherName
+                    </td>
+                    <td>
+                        @item.Class
+                    </td>
+                    <td>
+                        @item.City
+                    </td>
+                    <td>
+                        @item.Country
+                    </td>
+                    <td>
+                        @if(@item.addresses.Count()>0){
+                      <select name="addresses" class="form-control">                          
+                          <option value="0">View Address</option>
+                          @foreach(var i in item.addresses){
+                          <option value="@i.Id">@i.Name</option>
+                           }
+                            </select>
+                        }
+                        else
+                        {
+                            <select name="addresses" class="form-control" disabled>
+                                <option selected>No Address</option>
+                            </select>
+                        }
+
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm btnEdit" onclick="Edit(this)" id="@item.Id" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button> |
+                        <button type="button" class="btn btn-secondary btn-sm btnDetails" onclick="Details(this)" id="@item.Id" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button> |
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmation(this)" id="@item.Id" >Delete</button>                      
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready( function () {
+        $('#studentsTable').DataTable();
+    } );
+    
+</script>
